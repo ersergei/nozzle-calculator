@@ -14,18 +14,29 @@
     </style>
 </head>
 <body class="min-h-screen py-8">
-<div id="mobile-bar"
+<div id="mobile-result"
      class="fixed top-0 left-0 right-0
-            bg-[#161d30] border-b border-[#24304f]
-            px-4 py-3
-            flex justify-between items-center
+            bg-[#161d30]
+            border-b border-[#24304f]
+            px-4 py-5
+            text-center
+            shadow-lg
             transform -translate-y-full
             transition-transform duration-300
-            lg:hidden z-40">
-  <span class="text-sm text-gray-400">Диаметр сопла</span>
-  <span id="mobile-diameter"
-        class="text-lg font-bold text-emerald-500">
-  </span>
+            lg:hidden z-50">
+
+  <div class="text-xs text-gray-400 mb-1">
+    Диаметр сопла
+  </div>
+
+  <div id="mobile-diameter"
+       class="text-3xl font-bold text-emerald-500">
+  </div>
+
+  <div id="mobile-material"
+       class="text-sm text-gray-300 mt-2">
+  </div>
+
 </div>
     <header class="max-w-7xl mx-auto px-4 mb-8">
         <div id="back-button-wrapper" class="mb-4 transition-transform duration-300">
@@ -38,7 +49,7 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <section class="order-2 lg:order-1 lg:col-span-5 bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-4">
+        <section class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-4">
             <h3 class="text-lg font-bold border-b pb-3 mb-4">Входные данные</h3>
             <div id="input-fields" class="space-y-4">
                 <label class="block text-sm font-semibold">Какой пластик вы используете?</label>
@@ -129,7 +140,7 @@
             </div>
         </section>
 
-        <section class="order-1 lg:order-2 lg:col-span-7 space-y-6">
+        <section class="lg:col-span-7 space-y-6">
             <div class="bg-[#161d30] p-8 rounded-2xl border border-[#24304f]">
                 <div id="diameter-block" class="text-center mb-8 bg-[#0b0f19] p-4 rounded-xl border border-[#24304f]">
                     <div class="text-sm text-gray-400 mb-1">Диаметр сопла</div>
@@ -150,14 +161,12 @@
                 <div class="text-3xl font-bold text-gray-200" id="res-time">0.0 ч.</div>
                 <div class="mt-4 text-sm text-gray-500 font-mono" id="res-flow">Поток: 0.00 мм³/с</div>
             </div>
-        </section>
 
-        <section class="order-3 lg:order-3 lg:col-span-7 lg:col-start-6 space-y-3">
-          <div class="bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-3">
-            <h3 class="text-lg font-bold border-b pb-3 mb-4 flex items-center gap-2">
-              <span>👍</span>
-              Полезное
-            </h3>
+            <section class="bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-3 mt-8">
+              <h3 class="text-lg font-bold border-b pb-3 mb-4 flex items-center gap-2">
+                <span>👍</span>
+                Полезное
+              </h3>
 
             <ul class="space-y-2 text-sm leading-relaxed">
 
@@ -203,6 +212,7 @@
 
             </ul>
           </div>
+        </section>
         </section>
     </main>
 
@@ -498,31 +508,35 @@
           lastScrollY = currentScrollY;
         });
 
-        // Mobile top panel (diameter bar)
-        const mobileBar = document.getElementById("mobile-bar");
+        // Mobile fixed result block
+        const mobileResult = document.getElementById("mobile-result");
         const diameterBlock = document.getElementById("diameter-block");
-        const mobileDiameter = document.getElementById("mobile-diameter");
         const resDiameter = document.getElementById("res-diameter");
+        const resMaterial = document.getElementById("res-material-top");
+        const mobileDiameter = document.getElementById("mobile-diameter");
+        const mobileMaterial = document.getElementById("mobile-material");
 
-        function handleScrollPanel() {
+        function handleMobileResult() {
           if (window.innerWidth >= 1024) return;
 
           const rect = diameterBlock.getBoundingClientRect();
 
           if (rect.bottom < 0) {
-            mobileBar.classList.remove("-translate-y-full");
+            mobileResult.classList.remove("-translate-y-full");
           } else {
-            mobileBar.classList.add("-translate-y-full");
+            mobileResult.classList.add("-translate-y-full");
           }
         }
 
-        window.addEventListener("scroll", handleScrollPanel);
+        window.addEventListener("scroll", handleMobileResult);
 
         const observer = new MutationObserver(() => {
           mobileDiameter.textContent = resDiameter.textContent;
+          mobileMaterial.textContent = "Материал сопла: " + resMaterial.textContent;
         });
 
         observer.observe(resDiameter, { childList: true });
+        observer.observe(resMaterial, { childList: true });
     </script>
 </body>
 </html>
