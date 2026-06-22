@@ -121,9 +121,6 @@
                     <input type="number" id="calc-speed" value="60" step="5" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-10">
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм/с</span>
                 </div>
-                <div class="lg:hidden mt-2">
-                    <input type="range" id="calc-speed-range" min="1" max="300" step="5" value="60" class="w-full accent-emerald-600">
-                </div>
 
                 <label class="block text-sm font-semibold">Высота слоя, мм</label>
                 <div class="relative">
@@ -171,14 +168,6 @@
                     </div>
                 </div>
                 <div id="bar-chart" class="space-y-4 mb-8"></div>
-                <div id="mobile-scores" class="lg:hidden space-y-1.5 mb-4 text-xs">
-                  <div class="flex justify-between"><span class="text-gray-400">Детализация</span><span id="ms-det" class="text-gray-200 font-medium">0%</span></div>
-                  <div class="flex justify-between"><span class="text-gray-400">Скорость печати</span><span id="ms-speed" class="text-gray-200 font-medium">0%</span></div>
-                  <div class="flex justify-between"><span class="text-gray-400">Прочность детали</span><span id="ms-strength" class="text-gray-200 font-medium">0%</span></div>
-                  <div class="flex justify-between"><span class="text-gray-400">Нагрузка хотэнда</span><span id="ms-hotend" class="text-gray-200 font-medium">0%</span></div>
-                  <div class="flex justify-between"><span class="text-gray-400">Стабильность печати</span><span id="ms-stability" class="text-gray-200 font-medium">0%</span></div>
-                  <div class="flex justify-between pt-1.5 border-t border-gray-700/50 mt-1"><span class="text-gray-400">Риск засора</span><span id="ms-risk" class="font-medium text-emerald-400">Безопасный</span></div>
-                </div>
                 <div id="risk-container" class="p-4 rounded-xl border flex items-center gap-4 transition-colors mb-4">
                     <div>
                         <div class="text-xs text-gray-400">Риск засора</div>
@@ -542,4 +531,47 @@
           hRange.addEventListener("input", () => syncRangeToNumber(hRange, hInput));
         }
         if (wRange) {
-          wRange.addEventListener("input", () => syncRangeToNumber(wRange, wIn
+          wRange.addEventListener("input", () => syncRangeToNumber(wRange, wInput));
+        }
+
+        function updateSliderAttrs() {
+          if (window.innerWidth >= 1024) return;
+
+          const parseRange = (text) => {
+            const m = text.match(/[\d.]+/g);
+            return m ? [parseFloat(m[0]), parseFloat(m[1])] : [0, 0];
+          };
+
+          const [hMin, hMax] = parseRange(document.getElementById("height-range").innerText);
+          const [wMin, wMax] = parseRange(document.getElementById("width-range").innerText);
+
+          if (hRange && hMax > 0) {
+            hRange.min = hMin; hRange.max = hMax;
+            hRange.value = hInput.value;
+          }
+          if (wRange && wMax > 0) {
+            wRange.min = wMin; wRange.max = wMax;
+            wRange.value = wInput.value;
+          }
+        }
+
+        [document.getElementById("height-range"), document.getElementById("width-range")].forEach(el => {
+          if (el) new MutationObserver(updateSliderAttrs)
+            .observe(el, { childList: true, subtree: true, characterData: true });
+        });
+
+        function toggleMobileReadonly() {
+          const isMobile = window.innerWidth < 1024;
+          [hInput, wInput].forEach(el => {
+            if (!el) return;
+            if (isMobile) el.setAttribute("readonly", "true");
+            else el.removeAttribute("readonly");
+          });
+        }
+
+        toggleMobileReadonly();
+        window.addEventListener("resize", toggleMobileReadonly);
+        setTimeout(updateSliderAttrs, 100);
+    </script>
+</body>
+</html>
