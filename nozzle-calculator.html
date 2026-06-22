@@ -38,7 +38,7 @@
   </div>
 
 </div>
-<div class="fixed top-6 left-6 z-50">
+<div id="back-button-top" class="fixed top-6 left-6 z-50 transition-opacity duration-300">
     <a href="index.html" class="flex items-center gap-2 bg-[#161d30] border-2 border-[#2f3b63] text-gray-200 px-5 py-2.5 rounded-xl hover:bg-[#1d2742] hover:border-emerald-500/60 transition text-sm font-semibold">
         ← На главную
     </a>
@@ -117,6 +117,9 @@
                     <input type="number" id="calc-height" value="0.20" step="0.01" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-10">
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм</span>
                 </div>
+                <div class="lg:hidden mt-2">
+                    <input type="range" id="calc-height-range" min="0.05" max="0.45" step="0.01" value="0.20" class="w-full accent-emerald-600">
+                </div>
                 <div id="height-range" class="text-xs text-gray-400 mt-1">
                   Допустимо: –
                 </div>
@@ -125,6 +128,9 @@
                 <div class="relative">
                     <input type="number" id="calc-width" value="0.48" step="0.01" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-10">
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм</span>
+                </div>
+                <div class="lg:hidden mt-2">
+                    <input type="range" id="calc-width-range" min="0.25" max="0.75" step="0.01" value="0.48" class="w-full accent-emerald-600">
                 </div>
                 <div id="width-range" class="text-xs text-gray-400 mt-1">
                   Допустимо: –
@@ -478,6 +484,84 @@
 
         observer.observe(resDiameter, { childList: true });
         observer.observe(resMaterial, { childList: true });
+
+        // Back button — hide on scroll down, show on scroll up (mobile only)
+        (function() {
+          const backBtn = document.getElementById("back-button-top");
+          if (!backBtn) return;
+          let lastScrollY = window.scrollY;
+
+          window.addEventListener("scroll", () => {
+            if (window.innerWidth >= 1024) return;
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > lastScrollY && currentScrollY > 60) {
+              backBtn.classList.add("opacity-0", "pointer-events-none");
+            } else {
+              backBtn.classList.remove("opacity-0", "pointer-events-none");
+            }
+            lastScrollY = currentScrollY;
+          }, { passive: true });
+        })();
+
+        // Mobile — readonly + range slider control for height & width
+        const hInput = document.getElementById("calc-height");
+        const wInput = document.getElementById("calc-width");
+        const hRange = document.getElementById("calc-height-range");
+        const wRange = document.getElementById("calc-width-range");
+
+        function syncRangeToNumber(slider, input) {
+          if (!slider || !input) return;
+          input.value = parseFloat(slider.value).toFixed(2);
+          fullRecalculate();
+        }
+
+        if (hRange) {
+          hRange.addEventListener("input", () => syncRangeToNumber(hRange, hInput));
+        }
+        if (wRange) {
+          wRange.addEventListener("input", () => syncRangeToNumber(wRange, wInput));
+        }
+
+        function updateSliderAttrs() {
+          if (window.innerWidth >= 1024) return;
+
+          const parseRange = (text) => {
+            const m = text.match(/[\d.]+/g);
+            return m ? [parseFloat(m[0]), parseFloat(m[1])] : [0, 0];
+          };
+
+          const [hMin, hMax] = parseRange(document.getElementById("height-range").innerText);
+          const [wMin, wMax] = parseRange(document.getElementById("width-range").innerText);
+
+          if (hRange && hMax > 0) {
+            hRange.min = hMin; hRange.max = hMax;
+            hRange.value = hInput.value;
+          }
+          if (wRange && wMax > 0) {
+            wRange.min = wMin; wRange.max = wMax;
+            wRange.value = wInput.value;
+          }
+        }
+
+        // Observe range text changes
+        [document.getElementById("height-range"), document.getElementById("width-range")].forEach(el => {
+          if (el) new MutationObserver(updateSliderAttrs)
+            .observe(el, { childList: true, subtree: true, characterData: true });
+        });
+
+        // Toggle readonly on mobile
+        function toggleMobileReadonly() {
+          const isMobile = window.innerWidth < 1024;
+          [hInput, wInput].forEach(el => {
+            if (!el) return;
+            if (isMobile) el.setAttribute("readonly", "true");
+            else el.removeAttribute("readonly");
+          });
+        }
+
+        toggleMobileReadonly();
+        window.addEventListener("resize", toggleMobileReadonly);
+        setTimeout(updateSliderAttrs, 100);
     </script>
 </body>
 </html>
