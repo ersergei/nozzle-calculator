@@ -38,18 +38,17 @@
   </div>
 
 </div>
+<div class="fixed top-6 left-6 z-50">
+    <a href="index.html" class="flex items-center gap-2 bg-[#161d30] border-2 border-[#2f3b63] text-gray-200 px-5 py-2.5 rounded-xl hover:bg-[#1d2742] hover:border-emerald-500/60 transition text-sm font-semibold">
+        ← На главную
+    </a>
+</div>
     <header class="max-w-7xl mx-auto px-4 mb-8">
-        <div id="back-button-wrapper" class="mb-4 transition-transform duration-300">
-            <a href="index.html"
-               class="inline-flex items-center gap-2 bg-[#161d30] border border-[#2f3b63] text-gray-200 px-3 py-1.5 lg:px-5 lg:py-2.5 rounded-lg lg:rounded-xl text-xs lg:text-sm font-semibold hover:bg-[#1d2742] hover:border-emerald-500/60 transition">
-                ← На главную
-            </a>
-        </div>
         <h1 class="text-3xl font-bold text-center text-white">Калькулятор выбора сопла</h1>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <section class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-4">
+        <section class="order-2 lg:order-1 lg:col-span-5 bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-4">
             <h3 class="text-lg font-bold border-b pb-3 mb-4">Входные данные</h3>
             <div id="input-fields" class="space-y-4">
                 <label class="block text-sm font-semibold">Какой пластик вы используете?</label>
@@ -76,42 +75,44 @@
                       Ненаполненный — PLA, PETG, ABS, ASA, TPU, Nylon<br>
                       Волокнистый — PLA‑CF, PA‑CF, PETG‑CF, GF<br>
                       Дисперсный — Glow, Metal‑filled, Ceramic<br>
-                      Органический — Wood, Cork, Hemp
+                      Органический — Wood, Cork<br>
+                      Металлический — Copper, Bronze, Steel
                     </span>
                   </span>
                 </label>
                 <div class="relative">
                     <select id="filler" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-12 appearance-none">
-                        <option value="Normal">Ненаполненный</option>
-                        <option value="Fiber">Волокнистый</option>
-                        <option value="Particle">Дисперсный</option>
-                        <option value="Wood">Органический</option>
+                        <option value="None">Ненаполненный</option>
+                        <option value="Fiber">Волокнистый (CF, GF)</option>
+                        <option value="Particle">Дисперсный (Glow, Metal)</option>
+                        <option value="Wood">Органический (Wood, Cork)</option>
                     </select>
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">▼</span>
                 </div>
-                <label class="block text-sm font-semibold">Что важнее?</label>
+
+                <label class="block text-sm font-semibold">Приоритет</label>
                 <div class="relative">
                     <select id="priority" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-12 appearance-none">
+                        <option value="Balanced">Сбалансированный</option>
                         <option value="Detail">Детализация</option>
-                        <option value="Balanced">Баланс</option>
                         <option value="Speed">Скорость</option>
                     </select>
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">▼</span>
                 </div>
-                <label class="block text-sm font-semibold">Размер модели</label>
-                <div class="relative">
-                    <input type="number" id="size-input" min="1" max="500" step="1" value="120" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-12">
-                    <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм</span>
+
+                <label class="block text-sm font-semibold">Размер детали, мм</label>
+                <div class="flex items-center gap-4 input-like-container">
+                    <input type="range" id="model-size" min="1" max="500" value="100" class="flex-grow accent-emerald-600">
+                    <input type="number" id="size-input" value="100" min="1" max="500" class="w-20 text-right bg-transparent border-0 p-0 text-gray-900 font-semibold text-lg outline-none">
                 </div>
-                <input type="range" id="model-size" min="1" max="500" value="120" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                
-                <label class="block text-sm font-semibold">Скорость печати</label>
+
+                <label class="block text-sm font-semibold">Скорость печати, мм/с</label>
                 <div class="relative">
-                    <input type="number" id="calc-speed" value="60" min="1" max="300" step="1" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-14">
+                    <input type="number" id="calc-speed" value="60" step="5" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-10">
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм/с</span>
                 </div>
-                
-                <label class="block text-sm font-semibold">Высота слоя</label>
+
+                <label class="block text-sm font-semibold">Высота слоя, мм</label>
                 <div class="relative">
                     <input type="number" id="calc-height" value="0.20" step="0.01" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-10">
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм</span>
@@ -119,8 +120,8 @@
                 <div id="height-range" class="text-xs text-gray-400 mt-1">
                   Допустимо: –
                 </div>
-                
-                <label class="block text-sm font-semibold">Ширина линии</label>
+
+                <label class="block text-sm font-semibold">Ширина линии, мм</label>
                 <div class="relative">
                     <input type="number" id="calc-width" value="0.48" step="0.01" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-10">
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм</span>
@@ -140,7 +141,7 @@
             </div>
         </section>
 
-        <section class="lg:col-span-7 space-y-6">
+        <section class="order-1 lg:order-2 lg:col-span-7 space-y-6">
             <div class="bg-[#161d30] p-8 rounded-2xl border border-[#24304f]">
                 <div id="diameter-block" class="text-center mb-8 bg-[#0b0f19] p-4 rounded-xl border border-[#24304f]">
                     <div class="text-sm text-gray-400 mb-1">Диаметр сопла</div>
@@ -167,52 +168,51 @@
                 <span>👍</span>
                 Полезное
               </h3>
-
-            <ul class="space-y-2 text-sm leading-relaxed">
-
-              <li><strong>Латунный стандарт:</strong> Самый доступный вариант для PLA, ABS и PETG без абразивных добавок.</li>
-
-              <li><strong>Теплопроводность стали:</strong> В 4–8 раз ниже латуни — влияет на плавление.</li>
-
-              <li><strong>Температурная компенсация:</strong> +5–15°C при переходе на сталь.</li>
-
-              <li><strong>Износ латуни:</strong> CF и GF разрушают отверстие за несколько печатей.</li>
-
-              <li><strong>Опасный Glow:</strong> Частицы алюмината стронция стирают сопла быстрее карбона.</li>
-
-              <li><strong>Закалённая сталь:</strong> Минимум для любых абразивов.</li>
-
-              <li><strong>Универсальный диаметр:</strong> 0.4 мм — лучший баланс.</li>
-
-              <li><strong>Ювелирная точность:</strong> 0.2 мм — максимум детализации, но высокий риск засора.</li>
-
-              <li><strong>Скоростной функционал:</strong> 0.6 мм+ — быстрее и прочнее.</li>
-
-              <li><strong>Золотое правило:</strong> Высота слоя = 25–75% от диаметра сопла.</li>
-
-              <li><strong>Безопасная нержавейка:</strong> Для медицины и пищевых форм.</li>
-
-              <li><strong>Вложенные магниты:</strong> Используйте немагнитную нержавейку.</li>
-
-              <li><strong>Инструментальная сталь:</strong> M2 и Vanadium держат твёрдость до 500°C.</li>
-
-              <li><strong>Хрупкий рубин:</strong> Не изнашивается, но боится удара.</li>
-
-              <li><strong>Медные сплавы:</strong> Стабильны при высоких скоростях.</li>
-
-              <li><strong>Технология CHT:</strong> +25–65% объёма расплава.</li>
-
-              <li><strong>Горячая затяжка:</strong> 250–280°C при установке сопла.</li>
-
-              <li><strong>Калибровка PID:</strong> Обязательна после смены сопла.</li>
-
-              <li><strong>Cold pull:</strong> Лучший способ чистки канала.</li>
-
-              <li><strong>Защита покрытий:</strong> Не использовать стальные щётки.</li>
-
-            </ul>
-          </div>
-        </section>
+            
+              <ul class="space-y-2 text-sm leading-relaxed">
+            
+                <li><strong>Латунный стандарт:</strong> Самый доступный вариант для PLA, ABS и PETG без абразивных добавок.</li>
+            
+                <li><strong>Теплопроводность стали:</strong> В 4–8 раз ниже латуни — влияет на плавление.</li>
+            
+                <li><strong>Температурная компенсация:</strong> +5–15°C при переходе на сталь.</li>
+            
+                <li><strong>Износ латуни:</strong> CF и GF разрушают отверстие за несколько печатей.</li>
+            
+                <li><strong>Опасный Glow:</strong> Частицы алюмината стронция стирают сопла быстрее карбона.</li>
+            
+                <li><strong>Закалённая сталь:</strong> Минимум для любых абразивов.</li>
+            
+                <li><strong>Универсальный диаметр:</strong> 0.4 мм — лучший баланс.</li>
+            
+                <li><strong>Ювелирная точность:</strong> 0.2 мм — максимум детализации, но высокий риск засора.</li>
+            
+                <li><strong>Скоростной функционал:</strong> 0.6 мм+ — быстрее и прочнее.</li>
+            
+                <li><strong>Золотое правило:</strong> Высота слоя = 25–75% от диаметра сопла.</li>
+            
+                <li><strong>Безопасная нержавейка:</strong> Для медицины и пищевых форм.</li>
+            
+                <li><strong>Вложенные магниты:</strong> Используйте немагнитную нержавейку.</li>
+            
+                <li><strong>Инструментальная сталь:</strong> M2 и Vanadium держат твёрдость до 500°C.</li>
+            
+                <li><strong>Хрупкий рубин:</strong> Не изнашивается, но боится удара.</li>
+            
+                <li><strong>Медные сплавы:</strong> Стабильны при высоких скоростях.</li>
+            
+                <li><strong>Технология CHT:</strong> +25–65% объёма расплава.</li>
+            
+                <li><strong>Горячая затяжка:</strong> 250–280°C при установке сопла.</li>
+            
+                <li><strong>Калибровка PID:</strong> Обязательна после смены сопла.</li>
+            
+                <li><strong>Cold pull:</strong> Лучший способ чистки канала.</li>
+            
+                <li><strong>Защита покрытий:</strong> Не использовать стальные щётки.</li>
+            
+              </ul>
+            </section>
         </section>
     </main>
 
@@ -221,56 +221,15 @@
           <h3 class="text-sm text-gray-400 uppercase tracking-wide mb-4">
             Полезные ссылки
           </h3>
-          <div class="flex flex-col lg:flex-row lg:gap-4">
-
-            <!-- Telegram -->
-            <a href="https://t.me/your_channel"
-               target="_blank"
-               class="flex items-center gap-3
-                      w-full lg:w-auto
-                      bg-[#0b0f19]
-                      border border-[#24304f]
-                      px-4 py-3
-                      rounded-xl
-                      hover:bg-[#1d2742]
-                      transition">
-
-                <span class="w-6 h-6 flex items-center justify-center
-                             rounded-full bg-[#229ED9]
-                             text-white text-sm">
-                    ✈
-                </span>
-
-                <span class="text-gray-300 text-sm font-medium">
-                    Телеграм-канал
-                </span>
-
+          <div class="flex flex-col lg:flex-row gap-4">
+            <a href="https://t.me/your_channel" target="_blank" class="flex items-center gap-2 bg-[#0b0f19] border border-[#24304f] px-4 py-2 rounded-xl hover:bg-[#1d2742] transition">
+              <span class="w-5 h-5 flex items-center justify-center rounded-full bg-[#229ED9] text-white text-xs">✈</span>
+              <span class="text-gray-300 text-sm">Телеграм-канал</span>
             </a>
-
-            <!-- YouTube -->
-            <a href="https://youtube.com/your_channel"
-               target="_blank"
-               class="flex items-center gap-3
-                      w-full lg:w-auto
-                      bg-[#0b0f19]
-                      border border-[#24304f]
-                      px-4 py-3
-                      rounded-xl
-                      hover:bg-[#1d2742]
-                      transition">
-
-                <span class="w-6 h-6 flex items-center justify-center
-                             rounded bg-[#FF0000]
-                             text-white text-sm">
-                    ▶
-                </span>
-
-                <span class="text-gray-300 text-sm font-medium">
-                    YouTube
-                </span>
-
+            <a href="https://youtube.com/your_channel" target="_blank" class="flex items-center gap-2 bg-[#0b0f19] border border-[#24304f] px-4 py-2 rounded-xl hover:bg-[#1d2742] transition">
+              <span class="w-5 h-5 flex items-center justify-center rounded bg-[#FF0000] text-white text-xs">▶</span>
+              <span class="text-gray-300 text-sm">YouTube</span>
             </a>
-
           </div>
         </div>
     </footer>
@@ -490,24 +449,6 @@
         ['filament', 'filler', 'priority', 'calc-speed', 'calc-height', 'calc-width'].forEach(id => document.getElementById(id).addEventListener('input', fullRecalculate));
         fullRecalculate();
 
-        // Back button scroll hide/show (mobile only)
-        let lastScrollY = window.scrollY;
-        const backButton = document.getElementById("back-button-wrapper");
-
-        window.addEventListener("scroll", () => {
-          const currentScrollY = window.scrollY;
-
-          if (window.innerWidth < 1024) {
-            if (currentScrollY > lastScrollY) {
-              backButton.classList.add("-translate-y-full");
-            } else {
-              backButton.classList.remove("-translate-y-full");
-            }
-          }
-
-          lastScrollY = currentScrollY;
-        });
-
         // Mobile fixed result block
         const mobileResult = document.getElementById("mobile-result");
         const diameterBlock = document.getElementById("diameter-block");
@@ -536,4 +477,7 @@
         });
 
         observer.observe(resDiameter, { childList: true });
-        observer.observe(resMaterial, { childList: tru
+        observer.observe(resMaterial, { childList: true });
+    </script>
+</body>
+</html>
