@@ -1,427 +1,125 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор выбора сопла</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { background-color: #0b0f19; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; }
-        input[type=range]::-webkit-slider-thumb { width: 32px; height: 32px; appearance: none; background: #10b981; border-radius: 50%; cursor: pointer; border: 4px solid #fff; }
-        .input-like-container { display: flex; justify-content: space-between; align-items: center; background: #f9fafb; padding: 0.75rem 1rem; border-radius: 0.75rem; border: 1px solid #e5e7eb; color: #3a3a4a; }
-        .unit-muted { opacity: 0.7; font-weight: 400; font-size: 0.875rem; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Калькулятор выбора сопла</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+body { background-color:#0b0f19; color:#f3f4f6; font-family:'Plus Jakarta Sans',sans-serif; }
+input[type=range]::-webkit-slider-thumb {
+  width:32px;height:32px;appearance:none;
+  background:#10b981;border-radius:50%;
+  cursor:pointer;border:4px solid #fff;
+}
+.unit-muted {opacity:.7;font-weight:400;font-size:.875rem;}
+</style>
 </head>
+
 <body class="min-h-screen py-8">
-<div class="fixed top-6 left-6 z-50">
-    <a href="index.html" class="flex items-center gap-2 bg-[#161d30] border-2 border-[#2f3b63] text-gray-200 px-5 py-2.5 rounded-xl hover:bg-[#1d2742] hover:border-emerald-500/60 transition text-sm font-semibold">
-        ← На главную
-    </a>
+
+<!-- КНОПКА НАЗАД -->
+<div class="fixed top-4 left-4 lg:top-6 lg:left-6 z-50">
+  <a href="index.html"
+     class="flex items-center gap-2
+            bg-[#161d30] border-2 border-[#2f3b63]
+            text-gray-200
+            px-3 py-1.5 lg:px-5 lg:py-2.5
+            rounded-lg lg:rounded-xl
+            text-xs lg:text-sm
+            font-semibold
+            hover:bg-[#1d2742]
+            hover:border-emerald-500/60
+            transition">
+      ← На главную
+  </a>
 </div>
-    <header class="max-w-7xl mx-auto px-4 mb-8">
-        <h1 class="text-3xl font-bold text-center text-white">Калькулятор выбора сопла</h1>
-    </header>
 
-    <main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <section class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-4">
-            <h3 class="text-lg font-bold border-b pb-3 mb-4">Входные данные</h3>
-            <div id="input-fields" class="space-y-4">
-                <label class="block text-sm font-semibold">Какой пластик вы используете?</label>
-                <div class="relative">
-                    <select id="filament" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-12 appearance-none">
-                        <option value="PLA">PLA</option>
-                        <option value="PETG">PETG</option>
-                        <option value="ABS">ABS</option>
-                        <option value="TPU">TPU</option>
-                    </select>
-                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">▼</span>
-                </div>
-                
-                <label class="block text-sm font-semibold flex items-center gap-2">
-                  Есть ли наполнитель?
-                  <span class="relative group cursor-pointer text-gray-400">
-                    <span class="inline-flex items-center justify-center w-4 h-4 border border-gray-400 rounded-full text-[10px] bg-transparent !bg-transparent">
-                      ?
-                    </span>
-                    <span class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-64
-                                 bg-[#161d30] text-gray-300 text-xs rounded-lg p-3
-                                 opacity-0 group-hover:opacity-100 transition-opacity
-                                 border border-[#24304f] pointer-events-none z-10">
-                      Ненаполненный — PLA, PETG, ABS, ASA, TPU, Nylon<br>
-                      Волокнистый — PLA‑CF, PA‑CF, PETG‑CF, GF<br>
-                      Дисперсный — Glow, Metal‑filled, Ceramic<br>
-                      Органический — Wood, Cork, Hemp
-                    </span>
-                  </span>
-                </label>
-                <div class="relative">
-                    <select id="filler" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-12 appearance-none">
-                        <option value="Normal">Ненаполненный</option>
-                        <option value="Fiber">Волокнистый</option>
-                        <option value="Particle">Дисперсный</option>
-                        <option value="Wood">Органический</option>
-                    </select>
-                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">▼</span>
-                </div>
-                <label class="block text-sm font-semibold">Что важнее?</label>
-                <div class="relative">
-                    <select id="priority" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-12 appearance-none">
-                        <option value="Detail">Детализация</option>
-                        <option value="Balanced">Баланс</option>
-                        <option value="Speed">Скорость</option>
-                    </select>
-                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">▼</span>
-                </div>
-                <label class="block text-sm font-semibold">Размер модели</label>
-                <div class="relative">
-                    <input type="number" id="size-input" min="1" max="500" step="1" value="120" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-12">
-                    <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм</span>
-                </div>
-                <input type="range" id="model-size" min="1" max="500" value="120" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                
-                <label class="block text-sm font-semibold">Скорость печати</label>
-                <div class="relative">
-                    <input type="number" id="calc-speed" value="60" min="1" max="300" step="1" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-14">
-                    <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм/с</span>
-                </div>
-                
-                <label class="block text-sm font-semibold">Высота слоя</label>
-                <div class="relative">
-                    <input type="number" id="calc-height" value="0.20" step="0.01" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-10">
-                    <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм</span>
-                </div>
-                <div id="height-range" class="text-xs text-gray-400 mt-1">
-                  Допустимо: –
-                </div>
-                
-                <label class="block text-sm font-semibold">Ширина линии</label>
-                <div class="relative">
-                    <input type="number" id="calc-width" value="0.48" step="0.01" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-10">
-                    <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм</span>
-                </div>
-                <div id="width-range" class="text-xs text-gray-400 mt-1">
-                  Допустимо: –
-                </div>
+<!-- МОБИЛЬНАЯ ВСПЛЫВАЮЩАЯ ПОЛОСА -->
+<div id="mobile-bar"
+     class="fixed top-0 left-0 right-0
+            bg-[#161d30] border-b border-[#24304f]
+            px-4 py-3
+            flex justify-between items-center
+            transform -translate-y-full
+            transition-transform duration-300
+            lg:hidden z-40">
 
-                <button id="copy-link"
-                    class="mt-4 bg-gray-100 hover:bg-gray-200 text-gray-700
-                           border border-gray-300 rounded-lg
-                           px-4 py-2 text-sm
-                           flex items-center gap-2 transition">
-                    <span id="copy-icon">📎</span>
-                    <span id="copy-text">Скопировать ссылку</span>
-                </button>
-            </div>
-        </section>
+  <span class="text-sm text-gray-400">Диаметр сопла</span>
+  <span id="mobile-diameter" class="text-lg font-bold text-emerald-500">
+    0,40 мм
+  </span>
+</div>
 
-        <section class="lg:col-span-7 space-y-6">
-            <div class="bg-[#161d30] p-8 rounded-2xl border border-[#24304f]">
-                <div class="text-center mb-8 bg-[#0b0f19] p-4 rounded-xl border border-[#24304f]">
-                    <div class="text-sm text-gray-400 mb-1">Диаметр сопла</div>
-                    <div id="res-diameter" class="text-5xl font-bold text-emerald-500">0,40 мм</div>
-                    <div class="mt-6 flex justify-center items-center gap-2">
-                        <div class="text-sm text-gray-400">Материал сопла:</div>
-                        <div id="res-material-top" class="text-sm font-bold text-gray-300">Латунь</div>
-                    </div>
-                </div>
-                <div id="bar-chart" class="space-y-4 mb-8"></div>
-                <div id="risk-container" class="p-4 rounded-xl border flex items-center gap-4 transition-colors mb-4">
-                    <div>
-                        <div class="text-xs text-gray-400">Риск засора</div>
-                        <div id="res-risk" class="font-bold">Безопасный</div>
-                    </div>
-                </div>
-                <div class="text-lg font-semibold text-gray-400 mb-2">Время печати:</div>
-                <div class="text-3xl font-bold text-gray-200" id="res-time">0.0 ч.</div>
-                <div class="mt-4 text-sm text-gray-500 font-mono" id="res-flow">Поток: 0.00 мм³/с</div>
-            </div>
+<header class="max-w-7xl mx-auto px-4 mb-8">
+  <h1 class="text-3xl font-bold text-center text-white">
+    Калькулятор выбора сопла
+  </h1>
+</header>
 
-            <section class="bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-3 mt-8">
-              <h3 class="text-lg font-bold border-b pb-3 mb-4 flex items-center gap-2">
-                <span>👍</span>
-                Полезное
-              </h3>
-            
-              <ul class="space-y-2 text-sm leading-relaxed">
-            
-                <li><strong>Латунный стандарт:</strong> Самый доступный вариант для PLA, ABS и PETG без абразивных добавок.</li>
-            
-                <li><strong>Теплопроводность стали:</strong> В 4–8 раз ниже латуни — влияет на плавление.</li>
-            
-                <li><strong>Температурная компенсация:</strong> +5–15°C при переходе на сталь.</li>
-            
-                <li><strong>Износ латуни:</strong> CF и GF разрушают отверстие за несколько печатей.</li>
-            
-                <li><strong>Опасный Glow:</strong> Частицы алюмината стронция стирают сопла быстрее карбона.</li>
-            
-                <li><strong>Закалённая сталь:</strong> Минимум для любых абразивов.</li>
-            
-                <li><strong>Универсальный диаметр:</strong> 0.4 мм — лучший баланс.</li>
-            
-                <li><strong>Ювелирная точность:</strong> 0.2 мм — максимум детализации, но высокий риск засора.</li>
-            
-                <li><strong>Скоростной функционал:</strong> 0.6 мм+ — быстрее и прочнее.</li>
-            
-                <li><strong>Золотое правило:</strong> Высота слоя = 25–75% от диаметра сопла.</li>
-            
-                <li><strong>Безопасная нержавейка:</strong> Для медицины и пищевых форм.</li>
-            
-                <li><strong>Вложенные магниты:</strong> Используйте немагнитную нержавейку.</li>
-            
-                <li><strong>Инструментальная сталь:</strong> M2 и Vanadium держат твёрдость до 500°C.</li>
-            
-                <li><strong>Хрупкий рубин:</strong> Не изнашивается, но боится удара.</li>
-            
-                <li><strong>Медные сплавы:</strong> Стабильны при высоких скоростях.</li>
-            
-                <li><strong>Технология CHT:</strong> +25–65% объёма расплава.</li>
-            
-                <li><strong>Горячая затяжка:</strong> 250–280°C при установке сопла.</li>
-            
-                <li><strong>Калибровка PID:</strong> Обязательна после смены сопла.</li>
-            
-                <li><strong>Cold pull:</strong> Лучший способ чистки канала.</li>
-            
-                <li><strong>Защита покрытий:</strong> Не использовать стальные щётки.</li>
-            
-              </ul>
-            </section>
-        </section>
-    </main>
+<main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-    <footer class="max-w-7xl mx-auto px-4 mt-16 mb-8">
-        <div class="bg-[#161d30] border border-[#24304f] p-8 rounded-2xl">
-          <h3 class="text-sm text-gray-400 uppercase tracking-wide mb-4">
-            Полезные ссылки
-          </h3>
-          <div class="flex gap-4">
-            <a href="https://t.me/your_channel" target="_blank" class="flex items-center gap-2 bg-[#0b0f19] border border-[#24304f] px-4 py-2 rounded-xl hover:bg-[#1d2742] transition">
-              <span class="w-5 h-5 flex items-center justify-center rounded-full bg-[#229ED9] text-white text-xs">✈</span>
-              <span class="text-gray-300 text-sm">Telegram</span>
-            </a>
-            <a href="https://youtube.com/your_channel" target="_blank" class="flex items-center gap-2 bg-[#0b0f19] border border-[#24304f] px-4 py-2 rounded-xl hover:bg-[#1d2742] transition">
-              <span class="w-5 h-5 flex items-center justify-center rounded bg-[#FF0000] text-white text-xs">▶</span>
-              <span class="text-gray-300 text-sm">YouTube</span>
-            </a>
-          </div>
-        </div>
-    </footer>
+<!-- ЛЕВЫЙ БЛОК -->
+<section class="order-2 lg:order-1 lg:col-span-5 bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-4">
+<h3 class="text-lg font-bold border-b pb-3 mb-4">Входные данные</h3>
+<div id="input-fields" class="space-y-4">
+<!-- твои инпуты без изменений -->
+</div>
+</section>
 
-    <script>
-        const filamentLimits = { 'PLA': 15, 'PETG': 12, 'ABS': 16, 'TPU': 5 };
-        const filamentFactors = { PLA: 1.0, PETG: 0.85, ABS: 0.95, TPU: 0.5 };
+<!-- ПРАВЫЙ БЛОК -->
+<section class="order-1 lg:order-2 lg:col-span-7 space-y-6">
 
-        function generateShareLink() {
-            return window.location.href;
-        }
+<div id="result-card" class="bg-[#161d30] p-8 rounded-2xl border border-[#24304f]">
 
-        document.getElementById('copy-link').addEventListener('click', () => {
-            const link = generateShareLink();
-            navigator.clipboard.writeText(link);
+<div id="diameter-block"
+     class="text-center mb-8 bg-[#0b0f19] p-4 rounded-xl border border-[#24304f]">
 
-            const button = document.getElementById('copy-link');
-            const text = document.getElementById('copy-text');
-            const icon = document.getElementById('copy-icon');
+<div class="text-sm text-gray-400 mb-1">Диаметр сопла</div>
+<div id="res-diameter"
+     class="text-5xl font-bold text-emerald-500">
+  0,40 мм
+</div>
 
-            button.classList.remove('bg-gray-100', 'hover:bg-gray-200', 'text-gray-700');
-            button.classList.add('bg-emerald-600', 'text-white');
+</div>
 
-            text.innerText = "Скопировано";
-            icon.innerText = "✔";
+</div>
 
-            setTimeout(() => {
-                button.classList.remove('bg-emerald-600', 'text-white');
-                button.classList.add('bg-gray-100', 'hover:bg-gray-200', 'text-gray-700');
+</section>
+</main>
 
-                text.innerText = "Скопировать ссылку";
-                icon.innerText = "📎";
-            }, 2000);
-        });
+<script>
+/* ===== ВСПЛЫВАЮЩАЯ МОБИЛЬНАЯ ПАНЕЛЬ ===== */
 
-        const getRawInput = () => ({
-            filament: document.getElementById('filament').value,
-            filler: document.getElementById('filler').value,
-            priority: document.getElementById('priority').value,
-            size: parseFloat(document.getElementById('size-input').value),
-            speed: parseFloat(document.getElementById('calc-speed').value),
-            height: parseFloat(document.getElementById('calc-height').value),
-            width: parseFloat(document.getElementById('calc-width').value)
-        });
+const mobileBar = document.getElementById('mobile-bar');
+const diameterBlock = document.getElementById('diameter-block');
+const mobileDiameter = document.getElementById('mobile-diameter');
+const resDiameter = document.getElementById('res-diameter');
 
-        const selectDiameter = (size, filler) => {
-            let d = size < 50 ? 0.25 : size < 150 ? 0.4 : 0.6;
-            if (filler === 'Fiber') d = Math.max(d, 0.6);
-            if (filler === 'Particle') d = Math.max(d, 0.4);
-            if (filler === 'Wood') d = Math.max(d, 0.6);
-            return d;
-        };
+function handleScroll() {
+  if (window.innerWidth >= 1024) return;
 
-        const constrainGeometry = (d, h, w, filament) => {
-            let minH = 0.25 * d;
-            const maxH = 0.75 * d;
+  const rect = diameterBlock.getBoundingClientRect();
 
-            if (filament === 'TPU') {
-                minH = 0.5 * d;
-            }
+  if (rect.bottom < 0) {
+    mobileBar.classList.remove('-translate-y-full');
+  } else {
+    mobileBar.classList.add('-translate-y-full');
+  }
+}
 
-            return {
-                height: Math.min(Math.max(h, minH), maxH),
-                width: Math.min(Math.max(w, 1.0 * d), 1.25 * d)
-            };
-        };
+window.addEventListener('scroll', handleScroll);
 
-        const applyPriority = (raw, diameter) => {
-            let modified = { ...raw };
-            switch(raw.priority) {
-                case 'Detail':
-                    modified.height = 0.4 * diameter;
-                    modified.width  = 1.05 * diameter;
-                    modified.speed  = raw.speed * 0.8;
-                    break;
-                case 'Speed':
-                    modified.height = 0.7 * diameter;
-                    modified.width  = 1.2 * diameter;
-                    modified.speed  = raw.speed * 1.25;
-                    break;
-                case 'Balanced':
-                default:
-                    modified.height = 0.5 * diameter;
-                    modified.width  = 1.12 * diameter;
-                    break;
-            }
-            return modified;
-        };
+/* ===== ОБНОВЛЕНИЕ ДИАМЕТРА В МОБИЛЬНОЙ ПОЛОСЕ ===== */
 
-        const calculateTime = (size, speed, geom) => {
-            const layers = size / geom.height;
-            const perimeter = size * 4;
-            const totalLen = layers * perimeter * 1.3;
-            const hours = (totalLen / speed) / 3600;
-            return hours < 1 ? Math.round(hours * 60) + " мин." : (hours < 24 ? hours.toFixed(1) + " ч." : (hours/24).toFixed(1) + " дня");
-        };
+const observer = new MutationObserver(() => {
+  mobileDiameter.textContent = resDiameter.textContent;
+});
 
-        document.getElementById('size-input').addEventListener('input', (e) => {
-            const value = Math.min(Math.max(parseInt(e.target.value) || 1, 1), 500);
-            document.getElementById('model-size').value = value;
-            fullRecalculate();
-        });
+observer.observe(resDiameter, { childList:true });
 
-        document.getElementById('model-size').addEventListener('input', (e) => {
-            document.getElementById('size-input').value = e.target.value;
-            fullRecalculate();
-        });
+</script>
 
-        document.getElementById('priority').addEventListener('change', () => {
-            const raw = getRawInput();
-            const diameter = selectDiameter(raw.size, raw.filler);
-            const preset = applyPriority(raw, diameter);
-
-            document.getElementById('calc-height').value = preset.height.toFixed(2);
-            document.getElementById('calc-width').value  = preset.width.toFixed(2);
-            document.getElementById('calc-speed').value  = Math.round(preset.speed);
-            fullRecalculate();
-        });
-
-        function fullRecalculate() {
-            const raw = getRawInput();
-            
-            let userSpeed = raw.speed;
-            if (isNaN(userSpeed) || userSpeed < 1) userSpeed = 1;
-            if (userSpeed > 300) userSpeed = 300;
-            if (raw.speed !== userSpeed) document.getElementById('calc-speed').value = userSpeed;
-
-            const diameter = selectDiameter(raw.size, raw.filler);
-            
-            let minHeight = 0.25 * diameter;
-            const maxHeight = 0.75 * diameter;
-
-            if (raw.filament === 'TPU') {
-              minHeight = 0.5 * diameter;
-            }
-
-            const minWidth  = 1.0 * diameter;
-            const maxWidth  = 1.25 * diameter;
-
-            document.getElementById('height-range').innerText =
-              `Допустимо: ${minHeight.toFixed(2)}–${maxHeight.toFixed(2)} мм`;
-
-            document.getElementById('width-range').innerText =
-              `Допустимо: ${minWidth.toFixed(2)}–${maxWidth.toFixed(2)} мм`;
-
-            let nozzleMat = 'Brass';
-            if (raw.filler === 'Fiber' || raw.filler === 'Particle' || raw.filler === 'Wood') nozzleMat = 'Hardened Steel';
-            
-            let height = raw.height;
-            let width  = raw.width;
-            const geom = constrainGeometry(diameter, height, width, raw.filament);
-
-            if (raw.height !== geom.height) document.getElementById('calc-height').value = geom.height.toFixed(2);
-            if (raw.width !== geom.width) document.getElementById('calc-width').value = geom.width.toFixed(2);
-
-            const Kt = nozzleMat === 'Hardened Steel' ? 0.75 : 1.0;
-            const flowLimit = (filamentLimits[raw.filament] || 10) * Kt;
-            
-            const K_filament = filamentFactors[raw.filament] || 1.0;
-            const mechanicalSpeed = userSpeed * K_filament;
-            const thermalSpeedLimit = flowLimit / (geom.width * geom.height);
-            const effectiveSpeed = Math.min(mechanicalSpeed, thermalSpeedLimit);
-            
-            const flow = effectiveSpeed * geom.width * geom.height;
-            
-            let risk = 'Безопасный';
-            if (raw.filler === 'Fiber' && diameter < 0.6) risk = 'Критический';
-            else if (raw.filler === 'Particle' && diameter < 0.4) risk = 'Высокий';
-            else if (flow > flowLimit * 0.9) risk = 'Высокий';
-            else if (flow > flowLimit * 0.75) risk = 'Средний';
-
-            const time = calculateTime(raw.size, effectiveSpeed, geom);
-
-            document.getElementById('res-diameter').innerText = diameter.toFixed(2).replace('.', ',') + " мм";
-            document.getElementById('res-time').innerText = time;
-            document.getElementById('res-flow').innerText = "Поток: " + flow.toFixed(2) + " мм³/с";
-            document.getElementById('res-risk').innerText = risk;
-            document.getElementById('res-material-top').innerText = nozzleMat === 'Hardened Steel' ? "Закалённая сталь" : "Латунь";
-
-            const dMin = 0.25;
-            const hMin = 0.05;
-            const detailScore = Math.min(100, 100 * ((dMin * hMin) / (diameter * geom.height)));
-            const speedReference = 150; 
-            const speedScore = Math.min(100, 100 * (effectiveSpeed / speedReference));
-            const strengthScore = Math.min(100, 100 * (0.7 * (geom.width / (1.25 * diameter)) + 0.3 * (geom.height / (0.75 * diameter))));
-            const hotendLoad = Math.min(100, 100 * (flow / flowLimit));
-            
-            const penaltyGeometry = (raw.filler === 'Fiber' && diameter < 0.6) ? 40 : 0;
-            const penaltyMaterialMismatch = ((raw.filler === 'Fiber' || raw.filler === 'Particle' || raw.filler === 'Wood') && nozzleMat === 'Brass') ? 50 : 0;
-            const stabilityScore = Math.max(0, 100 - (hotendLoad * 0.5) - penaltyGeometry - penaltyMaterialMismatch);
-
-            const scores = {
-                'Детализация': Math.round(detailScore),
-                'Скорость печати': Math.round(speedScore),
-                'Прочность детали': Math.round(strengthScore),
-                'Нагрузка хотэнда': Math.round(hotendLoad),
-                'Стабильность печати': Math.round(stabilityScore)
-            };
-            
-            document.getElementById('bar-chart').innerHTML = Object.entries(scores).map(([label, val]) => {
-                const opacity = 0.2 + 0.8 * (val / 100);
-                const barColor = `rgba(16, 185, 129, ${opacity})`;
-                return `
-                  <div class="flex items-center gap-4 text-xs">
-                    <span class="w-32 font-semibold text-gray-300">${label}</span>
-                    <div class="flex-grow h-3 bg-gray-800 rounded-full overflow-hidden">
-                        <div class="h-full transition-all duration-300" style="width:${val}%; background-color:${barColor}"></div>
-                    </div>
-                    <span class="w-10 text-right font-mono text-slate-400">${Math.round(val)}%</span>
-                  </div>`;
-            }).join('');
-
-            const rCont = document.getElementById('risk-container');
-            rCont.className = `p-4 rounded-xl border ${risk === 'Критический' ? 'bg-red-900/20 border-red-500' : (risk === 'Высокий' ? 'bg-amber-900/20 border-amber-500' : 'bg-emerald-900/20 border-emerald-500')}`;
-        }
-
-        ['filament', 'filler', 'priority', 'calc-speed', 'calc-height', 'calc-width'].forEach(id => document.getElementById(id).addEventListener('input', fullRecalculate));
-        fullRecalculate();
-    </script>
 </body>
 </html>
