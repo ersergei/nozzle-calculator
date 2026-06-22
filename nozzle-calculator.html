@@ -121,6 +121,9 @@
                     <input type="number" id="calc-speed" value="60" step="5" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-10">
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм/с</span>
                 </div>
+                <div class="lg:hidden mt-2">
+                    <input type="range" id="calc-speed-range" min="1" max="300" step="5" value="60" class="w-full accent-emerald-600">
+                </div>
 
                 <label class="block text-sm font-semibold">Высота слоя, мм</label>
                 <div class="relative">
@@ -572,6 +575,34 @@
         toggleMobileReadonly();
         window.addEventListener("resize", toggleMobileReadonly);
         setTimeout(updateSliderAttrs, 100);
+
+        // Mobile — speed slider
+        const sInput = document.getElementById("calc-speed");
+        const sRange = document.getElementById("calc-speed-range");
+
+        function syncSpeedRange() {
+          if (!sRange || !sInput) return;
+          sInput.value = sRange.value;
+          fullRecalculate();
+        }
+
+        if (sRange) {
+          sRange.addEventListener("input", syncSpeedRange);
+        }
+
+        // Extend readonly toggle for speed
+        function toggleMobileReadonlyAll() {
+          const isMobile = window.innerWidth < 1024;
+          [hInput, wInput, sInput].forEach(el => {
+            if (!el) return;
+            if (isMobile) el.setAttribute("readonly", "true");
+            else el.removeAttribute("readonly");
+          });
+          if (isMobile && sRange && sInput) sRange.value = sInput.value;
+        }
+
+        toggleMobileReadonlyAll();
+        window.addEventListener("resize", toggleMobileReadonlyAll);
     </script>
 </body>
 </html>
