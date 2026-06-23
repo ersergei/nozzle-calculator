@@ -574,4 +574,15 @@
         function toggleMobileReadonlyAll() {
           const isMobile = window.innerWidth < 1024;
           [hInput, wInput, sInput].forEach(el => {
-            if (
+            if (!el) return;
+            if (isMobile) el.setAttribute("readonly", "true");
+            else el.removeAttribute("readonly");
+          });
+          if (isMobile && sRange && sInput) sRange.value = sInput.value;
+        }
+
+        toggleMobileReadonlyAll();
+        window.addEventListener("resize", toggleMobileReadonlyAll);
+    </script>
+</body>
+</html>
