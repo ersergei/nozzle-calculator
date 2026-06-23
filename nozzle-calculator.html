@@ -37,9 +37,6 @@
        class="text-sm text-gray-300 mt-2">
   </div>
 
-  <!-- ✅ НОВАЯ ДИАГРАММА -->
-  <div id="mobile-bar-chart" class="space-y-3 mt-4"></div>
-
 </div>
 <header class="max-w-7xl mx-auto px-4 mb-8">
     <div id="back-button-wrapper" class="mb-4 transition-transform duration-300">
@@ -444,11 +441,6 @@
                   </div>`;
             }).join('');
 
-            const mobileChart = document.getElementById('mobile-bar-chart');
-            if (mobileChart) {
-                mobileChart.innerHTML = document.getElementById('bar-chart').innerHTML;
-            }
-
             const rCont = document.getElementById('risk-container');
             rCont.className = `p-4 rounded-xl border ${risk === 'Критический' ? 'bg-red-900/20 border-red-500' : (risk === 'Высокий' ? 'bg-amber-900/20 border-amber-500' : 'bg-emerald-900/20 border-emerald-500')}`;
         }
@@ -581,4 +573,14 @@
           const isMobile = window.innerWidth < 1024;
           [hInput, wInput, sInput].forEach(el => {
             if (!el) return;
-            if (isMobile) e
+            if (isMobile) el.setAttribute("readonly", "true");
+            else el.removeAttribute("readonly");
+          });
+          if (isMobile && sRange && sInput) sRange.value = sInput.value;
+        }
+
+        toggleMobileReadonlyAll();
+        window.addEventListener("resize", toggleMobileReadonlyAll);
+    </script>
+</body>
+</html>
