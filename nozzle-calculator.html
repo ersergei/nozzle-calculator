@@ -11,54 +11,24 @@
         input[type=range]::-webkit-slider-thumb { width: 32px; height: 32px; appearance: none; background: #10b981; border-radius: 50%; cursor: pointer; border: 4px solid #fff; }
         .input-like-container { display: flex; justify-content: space-between; align-items: center; background: #f9fafb; padding: 0.75rem 1rem; border-radius: 0.75rem; border: 1px solid #e5e7eb; color: #3a3a4a; }
         .unit-muted { opacity: 0.7; font-weight: 400; font-size: 0.875rem; }
+        @media (max-width: 639px) {
+            .social-links {
+                flex-direction: column;
+            }
+            .social-links a {
+                width: 100%;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen py-8">
-<div id="mobile-result"
-     class="fixed top-0 left-0 right-0
-            bg-[#161d30]
-            border-b border-[#24304f]
-            px-4 py-5
-            text-center
-            shadow-lg
-            transform -translate-y-full
-            transition-transform duration-300
-            lg:hidden z-50">
-
-  <div class="text-xs text-gray-400 mb-1">
-    Диаметр сопла
-  </div>
-
-  <div id="mobile-diameter"
-       class="text-3xl font-bold text-emerald-500">
-  </div>
-
-  <div id="mobile-material"
-       class="text-sm text-gray-300 mt-2">
-  </div>
-
-</div>
-<header class="max-w-7xl mx-auto px-4 mb-8">
-    <div id="back-button-wrapper" class="mb-4 transition-transform duration-300">
-        <a href="index.html"
-           class="inline-flex items-center gap-2
-                  bg-[#161d30] border border-[#2f3b63]
-                  text-gray-200
-                  px-3 py-1.5 lg:px-5 lg:py-2.5
-                  rounded-lg lg:rounded-xl
-                  text-xs lg:text-sm
-                  font-semibold
-                  hover:bg-[#1d2742]
-                  hover:border-emerald-500/60
-                  transition">
-            ← На главную
-        </a>
-    </div>
-    <h1 class="text-3xl font-bold text-center text-white">Калькулятор выбора сопла</h1>
-</header>
+    <header class="max-w-7xl mx-auto px-4 mb-8">
+        <h1 class="text-3xl font-bold text-center text-white">Калькулятор выбора сопла</h1>
+    </header>
 
     <main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <section class="order-2 lg:order-1 lg:col-span-5 bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-4">
+        <section class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-4">
             <h3 class="text-lg font-bold border-b pb-3 mb-4">Входные данные</h3>
             <div id="input-fields" class="space-y-4">
                 <label class="block text-sm font-semibold">Какой пластик вы используете?</label>
@@ -85,68 +55,54 @@
                       Ненаполненный — PLA, PETG, ABS, ASA, TPU, Nylon<br>
                       Волокнистый — PLA‑CF, PA‑CF, PETG‑CF, GF<br>
                       Дисперсный — Glow, Metal‑filled, Ceramic<br>
-                      Органический — Wood, Cork<br>
-                      Металлический — Copper, Bronze, Steel
+                      Органический — Wood, Cork, Hemp
                     </span>
                   </span>
                 </label>
                 <div class="relative">
                     <select id="filler" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-12 appearance-none">
-                        <option value="None">Ненаполненный</option>
-                        <option value="Fiber">Волокнистый (CF, GF)</option>
-                        <option value="Particle">Дисперсный (Glow, Metal)</option>
-                        <option value="Wood">Органический (Wood, Cork)</option>
+                        <option value="Normal">Ненаполненный</option>
+                        <option value="Fiber">Волокнистый</option>
+                        <option value="Particle">Дисперсный</option>
+                        <option value="Wood">Органический</option>
                     </select>
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">▼</span>
                 </div>
-
-                <label class="block text-sm font-semibold">Приоритет</label>
+                <label class="block text-sm font-semibold">Что важнее?</label>
                 <div class="relative">
                     <select id="priority" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-12 appearance-none">
-                        <option value="Balanced">Сбалансированный</option>
                         <option value="Detail">Детализация</option>
+                        <option value="Balanced">Баланс</option>
                         <option value="Speed">Скорость</option>
                     </select>
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">▼</span>
                 </div>
-
-                <label class="block text-sm font-semibold">Размер детали</label>
-                <div class="flex items-center gap-4 input-like-container">
-                    <input type="range" id="model-size" min="1" max="500" value="100" class="flex-grow accent-emerald-600">
-                    <div class="flex items-center gap-1">
-                        <input type="number" id="size-input" value="100" min="1" max="500" class="w-20 text-right bg-transparent border-0 p-0 text-gray-900 font-semibold text-lg outline-none">
-                        <span class="text-sm text-gray-500">мм</span>
-                    </div>
+                <label class="block text-sm font-semibold">Размер модели</label>
+                <div class="relative">
+                    <input type="number" id="size-input" min="1" max="500" step="1" value="120" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-12">
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм</span>
                 </div>
-
+                <input type="range" id="model-size" min="1" max="500" value="120" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                
                 <label class="block text-sm font-semibold">Скорость печати</label>
-                <div class="flex items-center gap-4 input-like-container">
-                    <input type="range" id="calc-speed-range" min="0" max="300" step="5" value="60" class="flex-grow accent-emerald-600">
-                    <div class="flex items-center gap-1">
-                        <input type="number" id="calc-speed" value="60" step="5" class="w-20 text-right bg-transparent border-0 p-0 text-gray-900 font-semibold text-lg outline-none">
-                        <span class="text-sm text-gray-500">мм/с</span>
-                    </div>
+                <div class="relative">
+                    <input type="number" id="calc-speed" value="60" min="1" max="300" step="1" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-14">
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм/с</span>
                 </div>
-
+                
                 <label class="block text-sm font-semibold">Высота слоя</label>
-                <div class="flex items-center gap-4 input-like-container">
-                    <input type="range" id="calc-height-range" min="0.05" max="0.45" step="0.01" value="0.20" class="flex-grow accent-emerald-600">
-                    <div class="flex items-center gap-1">
-                        <input type="number" id="calc-height" value="0.20" step="0.01" class="w-20 text-right bg-transparent border-0 p-0 text-gray-900 font-semibold text-lg outline-none">
-                        <span class="text-sm text-gray-500">мм</span>
-                    </div>
+                <div class="relative">
+                    <input type="number" id="calc-height" value="0.20" step="0.01" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-10">
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм</span>
                 </div>
                 <div id="height-range" class="text-xs text-gray-400 mt-1">
                   Допустимо: –
                 </div>
-
+                
                 <label class="block text-sm font-semibold">Ширина линии</label>
-                <div class="flex items-center gap-4 input-like-container">
-                    <input type="range" id="calc-width-range" min="0.25" max="0.75" step="0.01" value="0.48" class="flex-grow accent-emerald-600">
-                    <div class="flex items-center gap-1">
-                        <input type="number" id="calc-width" value="0.48" step="0.01" class="w-20 text-right bg-transparent border-0 p-0 text-gray-900 font-semibold text-lg outline-none">
-                        <span class="text-sm text-gray-500">мм</span>
-                    </div>
+                <div class="relative">
+                    <input type="number" id="calc-width" value="0.48" step="0.01" class="w-full bg-gray-50 border rounded-xl px-4 py-3 pr-10">
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 unit-muted">мм</span>
                 </div>
                 <div id="width-range" class="text-xs text-gray-400 mt-1">
                   Допустимо: –
@@ -163,9 +119,9 @@
             </div>
         </section>
 
-        <section class="order-1 lg:order-2 lg:col-span-7 space-y-6">
+        <section class="lg:col-span-7 space-y-6">
             <div class="bg-[#161d30] p-8 rounded-2xl border border-[#24304f]">
-                <div id="diameter-block" class="text-center mb-8 bg-[#0b0f19] p-4 rounded-xl border border-[#24304f]">
+                <div class="text-center mb-8 bg-[#0b0f19] p-4 rounded-xl border border-[#24304f]">
                     <div class="text-sm text-gray-400 mb-1">Диаметр сопла</div>
                     <div id="res-diameter" class="text-5xl font-bold text-emerald-500">0,40 мм</div>
                     <div class="mt-6 flex justify-center items-center gap-2">
@@ -185,34 +141,55 @@
                 <div class="mt-4 text-sm text-gray-500 font-mono" id="res-flow">Поток: 0.00 мм³/с</div>
             </div>
 
-            <section class="hidden lg:block bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-3 mt-8">
-            <h3 class="text-lg font-bold border-b pb-3 mb-4 flex items-center gap-2">
-              <span>👍</span>
-              Полезное
-            </h3>
-
-            <ul class="space-y-2 text-sm leading-relaxed">
-              <li><strong>Латунный стандарт:</strong> Самый доступный вариант для PLA, ABS и PETG без абразивных добавок.</li>
-              <li><strong>Теплопроводность стали:</strong> В 4–8 раз ниже латуни — влияет на плавление.</li>
-              <li><strong>Температурная компенсация:</strong> +5–15°C при переходе на сталь.</li>
-              <li><strong>Износ латуни:</strong> CF и GF разрушают отверстие за несколько печатей.</li>
-              <li><strong>Опасный Glow:</strong> Частицы алюмината стронция стирают сопла быстрее карбона.</li>
-              <li><strong>Закалённая сталь:</strong> Минимум для любых абразивов.</li>
-              <li><strong>Универсальный диаметр:</strong> 0.4 мм — лучший баланс.</li>
-              <li><strong>Ювелирная точность:</strong> 0.2 мм — максимум детализации, но высокий риск засора.</li>
-              <li><strong>Скоростной функционал:</strong> 0.6 мм+ — быстрее и прочнее.</li>
-              <li><strong>Золотое правило:</strong> Высота слоя = 25–75% от диаметра сопла.</li>
-              <li><strong>Безопасная нержавейка:</strong> Для медицины и пищевых форм.</li>
-              <li><strong>Вложенные магниты:</strong> Используйте немагнитную нержавейку.</li>
-              <li><strong>Инструментальная сталь:</strong> M2 и Vanadium держат твёрдость до 500°C.</li>
-              <li><strong>Хрупкий рубин:</strong> Не изнашивается, но боится удара.</li>
-              <li><strong>Медные сплавы:</strong> Стабильны при высоких скоростях.</li>
-              <li><strong>Технология CHT:</strong> +25–65% объёма расплава.</li>
-              <li><strong>Горячая затяжка:</strong> 250–280°C при установке сопла.</li>
-              <li><strong>Калибровка PID:</strong> Обязательна после смены сопла.</li>
-              <li><strong>Cold pull:</strong> Лучший способ чистки канала.</li>
-              <li><strong>Защита покрытий:</strong> Не использовать стальные щётки.</li>
-            </ul>
+            <section class="bg-white p-6 rounded-2xl shadow-md text-[#3a3a4a] space-y-3 mt-8">
+              <h3 class="text-lg font-bold border-b pb-3 mb-4 flex items-center gap-2">
+                <span>👍</span>
+                Полезное
+              </h3>
+            
+              <ul class="space-y-2 text-sm leading-relaxed">
+            
+                <li><strong>Латунный стандарт:</strong> Самый доступный вариант для PLA, ABS и PETG без абразивных добавок.</li>
+            
+                <li><strong>Теплопроводность стали:</strong> В 4–8 раз ниже латуни — влияет на плавление.</li>
+            
+                <li><strong>Температурная компенсация:</strong> +5–15°C при переходе на сталь.</li>
+            
+                <li><strong>Износ латуни:</strong> CF и GF разрушают отверстие за несколько печатей.</li>
+            
+                <li><strong>Опасный Glow:</strong> Частицы алюмината стронция стирают сопла быстрее карбона.</li>
+            
+                <li><strong>Закалённая сталь:</strong> Минимум для любых абразивов.</li>
+            
+                <li><strong>Универсальный диаметр:</strong> 0.4 мм — лучший баланс.</li>
+            
+                <li><strong>Ювелирная точность:</strong> 0.2 мм — максимум детализации, но высокий риск засора.</li>
+            
+                <li><strong>Скоростной функционал:</strong> 0.6 мм+ — быстрее и прочнее.</li>
+            
+                <li><strong>Золотое правило:</strong> Высота слоя = 25–75% от диаметра сопла.</li>
+            
+                <li><strong>Безопасная нержавейка:</strong> Для медицины и пищевых форм.</li>
+            
+                <li><strong>Вложенные магниты:</strong> Используйте немагнитную нержавейку.</li>
+            
+                <li><strong>Инструментальная сталь:</strong> M2 и Vanadium держат твёрдость до 500°C.</li>
+            
+                <li><strong>Хрупкий рубин:</strong> Не изнашивается, но боится удара.</li>
+            
+                <li><strong>Медные сплавы:</strong> Стабильны при высоких скоростях.</li>
+            
+                <li><strong>Технология CHT:</strong> +25–65% объёма расплава.</li>
+            
+                <li><strong>Горячая затяжка:</strong> 250–280°C при установке сопла.</li>
+            
+                <li><strong>Калибровка PID:</strong> Обязательна после смены сопла.</li>
+            
+                <li><strong>Cold pull:</strong> Лучший способ чистки канала.</li>
+            
+                <li><strong>Защита покрытий:</strong> Не использовать стальные щётки.</li>
+            
+              </ul>
             </section>
         </section>
     </main>
@@ -222,12 +199,12 @@
           <h3 class="text-sm text-gray-400 uppercase tracking-wide mb-4">
             Полезные ссылки
           </h3>
-          <div class="flex gap-4">
+          <div class="social-links flex gap-4">
             <a href="https://t.me/spagetti3d" target="_blank" class="flex items-center gap-2 bg-[#0b0f19] border border-[#24304f] px-4 py-2 rounded-xl hover:bg-[#1d2742] transition">
               <span class="w-5 h-5 flex items-center justify-center rounded-full bg-[#229ED9] text-white text-xs">✈</span>
               <span class="text-gray-300 text-sm">Телеграм-канал</span>
             </a>
-            <a href="https://www.youtube.com/channel/UCGfaeKk5Sbu_3O2yHT-XFvQ" target="_blank" class="flex items-center gap-2 bg-[#0b0f19] border border-[#24304f] px-4 py-2 rounded-xl hover:bg-[#1d2742] transition">
+            <a href="https://www.youtube.com/@spagetti3d" target="_blank" class="flex items-center gap-2 bg-[#0b0f19] border border-[#24304f] px-4 py-2 rounded-xl hover:bg-[#1d2742] transition">
               <span class="w-5 h-5 flex items-center justify-center rounded bg-[#FF0000] text-white text-xs">▶</span>
               <span class="text-gray-300 text-sm">YouTube</span>
             </a>
@@ -449,140 +426,6 @@
 
         ['filament', 'filler', 'priority', 'calc-speed', 'calc-height', 'calc-width'].forEach(id => document.getElementById(id).addEventListener('input', fullRecalculate));
         fullRecalculate();
-
-        // Mobile fixed result block
-        const mobileResult = document.getElementById("mobile-result");
-        const diameterBlock = document.getElementById("diameter-block");
-        const resDiameter = document.getElementById("res-diameter");
-        const resMaterial = document.getElementById("res-material-top");
-        const mobileDiameter = document.getElementById("mobile-diameter");
-        const mobileMaterial = document.getElementById("mobile-material");
-
-        function handleMobileResult() {
-          if (window.innerWidth >= 1024) return;
-
-          const rect = diameterBlock.getBoundingClientRect();
-
-          if (rect.bottom < 0) {
-            mobileResult.classList.remove("-translate-y-full");
-          } else {
-            mobileResult.classList.add("-translate-y-full");
-          }
-        }
-
-        window.addEventListener("scroll", handleMobileResult);
-
-        const observer = new MutationObserver(() => {
-          mobileDiameter.textContent = resDiameter.textContent;
-          mobileMaterial.textContent = "Материал сопла: " + resMaterial.textContent;
-        });
-
-        observer.observe(resDiameter, { childList: true });
-        observer.observe(resMaterial, { childList: true });
-
-        // Back button — hide on scroll down, show on scroll up (mobile only)
-        (function() {
-          const backBtn = document.getElementById("back-button-wrapper");
-          if (!backBtn) return;
-          let lastScrollY = window.scrollY;
-
-          window.addEventListener("scroll", () => {
-            if (window.innerWidth >= 1024) return;
-            const currentScrollY = window.scrollY;
-            if (currentScrollY > lastScrollY && currentScrollY > 60) {
-              backBtn.classList.add("-translate-y-full");
-            } else {
-              backBtn.classList.remove("-translate-y-full");
-            }
-            lastScrollY = currentScrollY;
-          }, { passive: true });
-        })();
-
-        // Mobile — readonly + range slider control for height & width
-        const hInput = document.getElementById("calc-height");
-        const wInput = document.getElementById("calc-width");
-        const hRange = document.getElementById("calc-height-range");
-        const wRange = document.getElementById("calc-width-range");
-
-        function syncRangeToNumber(slider, input) {
-          if (!slider || !input) return;
-          input.value = parseFloat(slider.value).toFixed(2);
-          fullRecalculate();
-        }
-
-        if (hRange) {
-          hRange.addEventListener("input", () => syncRangeToNumber(hRange, hInput));
-        }
-        if (wRange) {
-          wRange.addEventListener("input", () => syncRangeToNumber(wRange, wInput));
-        }
-
-        function updateSliderAttrs() {
-          if (window.innerWidth >= 1024) return;
-
-          const parseRange = (text) => {
-            const m = text.match(/[\d.]+/g);
-            return m ? [parseFloat(m[0]), parseFloat(m[1])] : [0, 0];
-          };
-
-          const [hMin, hMax] = parseRange(document.getElementById("height-range").innerText);
-          const [wMin, wMax] = parseRange(document.getElementById("width-range").innerText);
-
-          if (hRange && hMax > 0) {
-            hRange.min = hMin; hRange.max = hMax;
-            hRange.value = hInput.value;
-          }
-          if (wRange && wMax > 0) {
-            wRange.min = wMin; wRange.max = wMax;
-            wRange.value = wInput.value;
-          }
-        }
-
-        [document.getElementById("height-range"), document.getElementById("width-range")].forEach(el => {
-          if (el) new MutationObserver(updateSliderAttrs)
-            .observe(el, { childList: true, subtree: true, characterData: true });
-        });
-
-        function toggleMobileReadonly() {
-          const isMobile = window.innerWidth < 1024;
-          [hInput, wInput].forEach(el => {
-            if (!el) return;
-            if (isMobile) el.setAttribute("readonly", "true");
-            else el.removeAttribute("readonly");
-          });
-        }
-
-        toggleMobileReadonly();
-        window.addEventListener("resize", toggleMobileReadonly);
-        setTimeout(updateSliderAttrs, 100);
-
-        // Mobile — speed slider
-        const sInput = document.getElementById("calc-speed");
-        const sRange = document.getElementById("calc-speed-range");
-
-        function syncSpeedRange() {
-          if (!sRange || !sInput) return;
-          sInput.value = sRange.value;
-          fullRecalculate();
-        }
-
-        if (sRange) {
-          sRange.addEventListener("input", syncSpeedRange);
-        }
-
-        // Extend readonly toggle for speed
-        function toggleMobileReadonlyAll() {
-          const isMobile = window.innerWidth < 1024;
-          [hInput, wInput, sInput].forEach(el => {
-            if (!el) return;
-            if (isMobile) el.setAttribute("readonly", "true");
-            else el.removeAttribute("readonly");
-          });
-          if (isMobile && sRange && sInput) sRange.value = sInput.value;
-        }
-
-        toggleMobileReadonlyAll();
-        window.addEventListener("resize", toggleMobileReadonlyAll);
     </script>
 </body>
 </html>
