@@ -14,22 +14,31 @@
 <body class="min-h-screen flex flex-col items-center py-16 px-4">
 
     <header class="text-center mb-16">
-        <h1 class="text-5xl font-bold mb-4 custom-heading">
+        <div class="text-xs mb-2 custom-heading">SPAGETTI3D.RU</div>
+        <h1 class="text-5xl font-bold mb-4" style="background: linear-gradient(to right, #b0b8ff, #7a83f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
             Полезные инструменты
         </h1>
         <p class="text-gray-400 max-w-2xl">
-            Калькуляторы и ресурсы для 3Д‑печати
+            Инженерные калькуляторы и практические инструменты для 3D‑печати.
         </p>
     </header>
 
     <main class="w-full max-w-2xl space-y-6">
-        <a href="nozzle-calculator.html" class="flex items-center gap-6 bg-[#161d30] border border-[#24304f] p-6 rounded-2xl hover:border-emerald-500/50 transition group cursor-pointer">
+        <a href="calculator.html" class="flex items-center gap-6 bg-[#161d30] border border-[#24304f] p-6 rounded-2xl hover:border-emerald-500/50 transition group">
             <div class="w-16 h-16 flex items-center justify-center bg-[#0b0f19] border border-[#24304f] rounded-xl text-3xl shrink-0">⚙️</div>
             <div class="flex-grow">
                 <h2 class="text-xl font-bold text-white mb-1 group-hover:text-emerald-400 transition">Калькулятор выбора сопла</h2>
-                <p class="text-gray-400 text-sm">Подбор диаметра сопла под вашу печать →</p>
+                <p class="text-gray-400 text-sm">Подбор идеального диаметра сопла под ваши задачи печати →</p>
             </div>
         </a>
+        
+        <div class="flex items-center gap-6 bg-[#161d30]/50 border border-[#24304f] p-6 rounded-2xl opacity-60">
+            <div class="w-16 h-16 flex items-center justify-center bg-[#0b0f19] border border-[#24304f] rounded-xl text-3xl shrink-0">⏳</div>
+            <div class="flex-grow">
+                <h2 class="text-xl font-bold text-white mb-1">Скоро будет</h2>
+                <p class="text-gray-400 text-sm">В разработке находятся новые инструменты для профи →</p>
+            </div>
+        </div>
     </main>
 
     <footer class="w-full max-w-2xl mt-16">
@@ -38,16 +47,17 @@
             Полезные ссылки
           </h3>
           <div class="flex gap-4">
-            <a href="https://t.me/spagetti3d" target="_blank" class="flex items-center gap-2 bg-[#0b0f19] border border-[#24304f] px-4 py-2 rounded-xl hover:bg-[#1d2742] transition">
+            <a href="#" class="flex items-center gap-2 bg-[#0b0f19] border border-[#24304f] px-4 py-2 rounded-xl hover:bg-[#1d2742] transition">
               <span class="w-5 h-5 flex items-center justify-center rounded-full bg-[#229ED9] text-white text-xs">✈</span>
-              <span class="text-gray-300 text-sm">Телеграм-канал</span>
+              <span class="text-gray-300 text-sm">Telegram</span>
             </a>
-            <a href="https://www.youtube.com/channel/UCGfaeKk5Sbu_3O2yHT-XFvQ" target="_blank" class="flex items-center gap-2 bg-[#0b0f19] border border-[#24304f] px-4 py-2 rounded-xl hover:bg-[#1d2742] transition">
+            <a href="#" class="flex items-center gap-2 bg-[#0b0f19] border border-[#24304f] px-4 py-2 rounded-xl hover:bg-[#1d2742] transition">
               <span class="w-5 h-5 flex items-center justify-center rounded bg-[#FF0000] text-white text-xs">▶</span>
               <span class="text-gray-300 text-sm">YouTube</span>
             </a>
           </div>
         </div>
+        <div class="text-xs text-center mt-6" style="color: #7a83f6; opacity: 0.55;">SPAGETTI3D.RU</div>
     </footer>
 </body>
 </html>
